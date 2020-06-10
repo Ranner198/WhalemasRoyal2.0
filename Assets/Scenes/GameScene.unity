@@ -294,7 +294,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   offset: {x: 19.57, y: 12.74, z: 0}
   background: {fileID: 1957252473}
-  parallaxSpeed: 0.00005
+  parallaxSpeed: 0.000005
 --- !u!1 &593823057
 GameObject:
   m_ObjectHideFlags: 0
@@ -846,6 +846,7 @@ GameObject:
   m_Component:
   - component: {fileID: 877201311}
   - component: {fileID: 877201310}
+  - component: {fileID: 877201313}
   - component: {fileID: 877201312}
   m_Layer: 0
   m_Name: GameManager
@@ -866,11 +867,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2fdaa98b20d278f43a48fb8be094ed04, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  numberOfPlayer: 4
+  numberOfPlayers: 0
+  numberOfBots: 4
+  practice: 0
   Paths: []
   players: []
   terminalVelocity: 30
-  startDelay: 9.4
   StartingGate: {fileID: 1203301725}
   countDownText: {fileID: 813123790}
   finishBanner: {fileID: 1544785639}
@@ -986,6 +988,19 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &877201313
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 877201309}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 14c7438688d605c4d88e478507e533bb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  startTimer: 9.4
 --- !u!95 &1203301725 stripped
 Animator:
   m_CorrespondingSourceObject: {fileID: -6057140222963153312, guid: 14d9345ad31066446a0a11dc2e8714ce,
@@ -1246,7 +1261,7 @@ Transform:
   m_LocalScale: {x: 35.594704, y: 7.313542, z: 39.485615}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 2
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1659650347
 GameObject:
@@ -1548,7 +1563,7 @@ PrefabInstance:
     - target: {fileID: 7905916862012552490, guid: 3497fef2376a63e44817eaeb0ffc179d,
         type: 3}
       propertyPath: m_RootOrder
-      value: 3
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 7905916862012552490, guid: 3497fef2376a63e44817eaeb0ffc179d,
         type: 3}

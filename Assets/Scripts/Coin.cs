@@ -16,8 +16,7 @@ public class Coin : MonoBehaviour
         {
             Destroy(gameObject, 2f);
             meshRenderer.enabled = false;
-            // Start Partial System here            
-            Debug.Log("Player Collected Coin");
+            // Start Partial System here
             audio.Play();
         }
     }

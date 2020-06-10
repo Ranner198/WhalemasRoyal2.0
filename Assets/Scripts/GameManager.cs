@@ -1,18 +1,20 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using UnityEngine.UI;
+using System.Linq;
 using UnityEngine;
 using TMPro;
 using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
-    public int numberOfPlayer;
+    public int numberOfPlayers;
+    public int numberOfBots;
+    public bool practice = false;
 
     public List<Vector3> Paths = new List<Vector3>();
     public List<Whaleburt> players = new List<Whaleburt>();
 
-    public float terminalVelocity = 20, startDelay = 6;
+    public float terminalVelocity = 20;
 
     public Animator StartingGate;
 
@@ -28,11 +30,24 @@ public class GameManager : MonoBehaviour
 
     public void Awake()
     {
-        for (int i = 0; i < numberOfPlayer; i++)
+        for (int i = 0; i < numberOfPlayers; i++)
         {
             GameObject newplayer = Instantiate(Whaleburt, Vector3.zero, Quaternion.identity);
+            newplayer.transform.rotation = Quaternion.Euler(8.6f, 0, 0);
             newplayer.name = "Player_" + i;
-            players.Add(newplayer.GetComponent<Whaleburt>());
+            Whaleburt temp = newplayer.GetComponent<Whaleburt>();
+            players.Add(temp);
+            temp.hatBehavior.GenerateRandomHat();
+        }
+        for (int i = 0; i < numberOfBots; i++)
+        {
+            GameObject newplayer = Instantiate(Whaleburt, Vector3.zero, Quaternion.identity);
+            newplayer.transform.rotation = Quaternion.Euler(8.6f, 0, 0);
+            newplayer.name = "Player_" + i;
+            Whaleburt temp = newplayer.GetComponent<Whaleburt>();
+            players.Add(temp);
+            temp.hatBehavior.GenerateRandomHat();
+            temp.IsBot();
         }
 
         instance = this;
@@ -41,7 +56,7 @@ public class GameManager : MonoBehaviour
     // Camera Logic
     public Vector3 GetLeader()
     {
-        if (players.Count == 1)
+        if (players.Count == 1 && !practice)
             Finish();
 
         Whaleburt whaleburt = players[0];
@@ -58,19 +73,20 @@ public class GameManager : MonoBehaviour
         return whaleburt.transform.position;
     }
 
+    public void GetPositions()
+    {
+        List<Whaleburt> positions = new List<Whaleburt>(players.OrderByDescending(e => e.transform.position.z));
+
+        for (int i = 0; i < positions.Count; i++)
+        {
+            positions[i].SetPosition(i+1);
+        }
+    }
+
     public void Finish()
     {
         finishBanner.SetActive(true);                
     }
-
-    // UI Updates
-    /*
-    public List<Whaleburt> GetPositions()
-    {    
-        List<Whaleburt> Positions = new List<Whaleburt>(players.OrderBy(i => i.transform.position.z));
-        return Positions;    
-    }
-    */
 
     public void Start()
     {
@@ -93,6 +109,8 @@ public class GameManager : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.R))
             SceneManager.LoadScene("GameScene");
+
+        GetPositions();
     }
 
     public void AddDestoryable(GameObject RaceTrack, List<GameObject> AdSigns, GameObject Object)
@@ -112,11 +130,11 @@ public class GameManager : MonoBehaviour
     #region Race Start Logic
     IEnumerator C_StartDelay()
     {
-        while (startDelay > 0)
+        while (WhalemasRoyalNetworkManager.instance.GetTimer() > 0)
         {
-            startDelay -= Time.deltaTime;
-            countDownText.text = Mathf.Round(startDelay+1).ToString();
-            countDownText.color = Color.Lerp(Color.red, Color.green, 1/startDelay);
+            float timer = WhalemasRoyalNetworkManager.instance.GetTimer();
+            countDownText.text = Mathf.Round(timer + 1).ToString();
+            countDownText.color = Color.Lerp(Color.red, Color.green, 1/ timer);
             yield return new WaitForEndOfFrame();
         }
 

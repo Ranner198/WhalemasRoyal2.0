@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class KillOffScreen : MonoBehaviour
 {
@@ -13,11 +11,9 @@ public class KillOffScreen : MonoBehaviour
 
     public void CheckVisible()
     {
-        print(Camera.main.gameObject);
         Vector3 screenPoint = Camera.main.WorldToViewportPoint(transform.position);
-        if (screenPoint.x < 0)
+        if (screenPoint.x < -.1f)
         {
-            print("Bruh I cant see");
             GameManager.instance.players.Remove(player.GetComponent<Whaleburt>());
             Destroy(player, 1f);
         }
